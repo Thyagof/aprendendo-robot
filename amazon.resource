@@ -14,6 +14,7 @@ Abrir o navegador
     Maximize Browser Window
 
 Fechar o navegador  
+    Capture Page Screenshot
     Close Browser
 
 Acessar a home page do site Amazon.com.br
@@ -39,6 +40,5 @@ Digitar o nome de produto "${PRODUCT}" no campo de pesquisa
 Clicar no botão de pesquisa
     Click Element    locator=nav-search-submit-button
 
-Verificar o resultado da pesquisa, listando o produto pesquisado
-    Wait Until Page Contains Element    locator=${SEARCH-RESULTS} 
-    Element Should Contain    locator=//span[@class='a-size-base-plus a-color-base a-text-normal'][contains(.,'Console Xbox Series S')]  expected=Xbox Series S
+Verificar o resultado da pesquisa, listando o produto "${PRODUCT}"
+    Wait Until Element Is Visible    locator=//span[@class='a-size-base-plus a-color-base a-text-normal'][contains(.,'${PRODUCT}')]
