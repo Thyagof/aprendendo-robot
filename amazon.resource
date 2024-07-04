@@ -6,7 +6,11 @@ ${URL}                        https://www.amazon.com.br/
 ${MENU_ELETRONICOS}           //a[@href='/Eletronicos-e-Tecnologia/b/?ie=UTF8&node=16209062011&ref_=nav_cs_electronics'][contains(.,'Eletrônicos')]
 ${HEADER_ELETRONICOS}         //h1[contains(.,'Eletrônicos e Tecnologia')]
 ${TEXT_HEADER_ELETRONICOS}    Eletrônicos e Tecnologia
+${SEARCH_BTN}                 nav-search-submit-button
 ${SEARCH-RESULTS}             //span[contains(@data-component-type,'s-search-results')]
+${CART}                       nav-cart
+${REMOVE_BTN}                 (//input[contains(@value,'Excluir')])[1]
+${ADD_TO_CART_BTN}            add-to-cart-button
 
 *** Keywords ***
 Abrir o navegador  
@@ -38,10 +42,27 @@ Digitar o nome de produto "${PRODUCT}" no campo de pesquisa
     Input Text    locator=twotabsearchtextbox  text=${PRODUCT}
 
 Clicar no botão de pesquisa
-    Click Element    locator=nav-search-submit-button
+    Click Element    locator=${SEARCH_BTN}
 
 Verificar o resultado da pesquisa, listando o produto "${PRODUCT}"
     Wait Until Element Is Visible    locator=//span[@class='a-size-base-plus a-color-base a-text-normal'][contains(.,'${PRODUCT}')]
+
+Adicionar o produto "${PRODUCT}" no carrinho
+    Click Element    locator=//span[@class='a-size-base-plus a-color-base a-text-normal'][contains(.,'${PRODUCT}')]
+    Wait Until Element Is Visible    locator=${ADD_TO_CART_BTN}
+    Click Element    locator=${ADD_TO_CART_BTN}
+
+Verificar se o produto "${PRODUCT}" foi adicionado com sucesso
+    Wait Until Element Is Visible    locator=//h1[@class='a-size-medium-plus a-color-base sw-atc-text a-text-bold'][contains(.,'Adicionado ao carrinho')]
+    Wait Until Element Is Visible    locator=//span[@class='a-size-base'][contains(.,'${PRODUCT}')]
+
+Remover o produto "${PRODUCT}" do carrinho
+    Click Element    locator=${CART}
+    Wait Until Element Is Visible    locator=//span[@class='a-truncate-cut'][contains(.,'${PRODUCT}')]
+    Click Element    locator=${REMOVE_BTN}
+
+Verificar se o carrinho fica vazio
+    Wait Until Element Is Visible    locator=//h1[@class='a-spacing-mini a-spacing-top-base'][contains(.,'Seu carrinho de compras da Amazon está vazio.')]
 
 #Gherkin
 Dado que estou na home page da Amazon.com.br
